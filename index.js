@@ -11,12 +11,22 @@ app.use(bodyParser.json());
 app.use("/feedbacks", feedbacksRouter);
 
 
+const domainsFromEnv = process.env.CORS_DOMAINS || ""
+
+const whitelist = domainsFromEnv.split(",").map(item => item.trim());
+
 const corsOptions = {
-  origin: 'https://your-app-name.herokuapp.com',
-  optionsSuccessStatus: 200
-}
+  origin: function (origin, callback) {
+    if (!origin || whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error("Not allowed by CORS"))
+    }
+  },
+  credentials: true,
+};
 app.use(cors(corsOptions));
-app.options('*', cors());
+
 app.use(bodyParser.json());
 app.use("/feedbacks", feedbacksRouter);
 
