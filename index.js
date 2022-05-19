@@ -1,26 +1,22 @@
 const express = require('express');
-const app = express();
 const mongoose = require('mongoose');
-require('dotenv/config');
-
+const cors = require('cors');
 const bodyParser = require('body-parser');
-app.use(bodyParser.json());
-
+require('dotenv/config');
 const feedbacksRouter = require('./routes/feedbacks');
 
+const app = express();
+
+
+const corsOptions = {
+  origin: 'https://your-app-name.herokuapp.com',
+  optionsSuccessStatus: 200
+}
+app.use(cors(corsOptions));
+app.options('*', cors());
+app.use('/', routes);
+app.use(bodyParser.json());
 app.use("/feedbacks", feedbacksRouter);
-
-
-mongoose.connect(
-    `mongodb+srv://${process.env.DATABASE_USER}:${process.env.DATABASE_PASSWORD}@cluster0.kqqb8.mongodb.net/?retryWrites=true&w=majority`,
-    (e) => {
-        if (e) {
-            console.log(e);
-        } else {
-            console.log('Connected to MongoDB');
-        }
-    }
-);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
@@ -32,9 +28,13 @@ app.get('/', (req, res) => {
     res.send('Hello World');
 });
 
-const feedbacks = [
-    {
-        id: "string",
-        feedbacks:"string"
+mongoose.connect(
+    `mongodb+srv://${process.env.DATABASE_USER}:${process.env.DATABASE_PASSWORD}@cluster0.kqqb8.mongodb.net/?retryWrites=true&w=majority`,
+    (e) => {
+        if (e) {
+            console.log(e);
+        } else {
+            console.log('Connected to MongoDB');
+        }
     }
-]
+);
