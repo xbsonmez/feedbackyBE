@@ -7,24 +7,12 @@ const feedbacksRouter = require('./routes/feedbacks');
 
 const app = express();
 
-app.use(bodyParser.json());
-app.use("/feedbacks", feedbacksRouter);
 
-
-const domainsFromEnv = process.env.CORS_DOMAINS || ""
-
-const whitelist = domainsFromEnv.split(",").map(item => item.trim());
-
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin || whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error("Not allowed by CORS"))
-    }
-  },
-  credentials: true,
-};
+const corsOptions ={
+    origin:'*', 
+    credentials:true,
+    optionSuccessStatus:200,
+ };
 app.use(cors(corsOptions));
 
 // Add headers before the routes are defined
