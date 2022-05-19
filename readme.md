@@ -1,1 +1,5 @@
-Node and expressx
+Node and express
+
+dependencies:
+cors
+body-parser
