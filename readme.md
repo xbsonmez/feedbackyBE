@@ -1,5 +1,5 @@
 Node and express
 
 dependencies:
-cors- *
+cors
 body-parser
