@@ -7,6 +7,9 @@ const feedbacksRouter = require('./routes/feedbacks');
 
 const app = express();
 
+app.use(bodyParser.json());
+app.use("/feedbacks", feedbacksRouter);
+
 
 const corsOptions = {
   origin: 'https://your-app-name.herokuapp.com',
@@ -14,19 +17,8 @@ const corsOptions = {
 }
 app.use(cors(corsOptions));
 app.options('*', cors());
-app.use('/', routes);
 app.use(bodyParser.json());
 app.use("/feedbacks", feedbacksRouter);
-
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-    console.log('Server is running on port 5000');
-});
-
-
-app.get('/', (req, res) => {
-    res.send('Hello World');
-});
 
 mongoose.connect(
     `mongodb+srv://${process.env.DATABASE_USER}:${process.env.DATABASE_PASSWORD}@cluster0.kqqb8.mongodb.net/?retryWrites=true&w=majority`,
@@ -38,3 +30,20 @@ mongoose.connect(
         }
     }
 );
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+    console.log('Server is running on port 5000');
+});
+
+
+app.get('/', (req, res) => {
+    res.send('Hello World');
+});
+
+const feedbacks = [
+    {
+        id: "string",
+        feedbacks:"string"
+    }
+]
