@@ -5,7 +5,13 @@ const Feedbacks = require('../models/Feedbacks');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-    res.send('feedbacks');
+    Feedbacks.find()
+    .then(feedbacks => {
+        res.json(feedbacks);
+    })
+    .catch(err => {
+        res.json(err);
+    });
 });
 
 router.post("/", (req, res) => {
