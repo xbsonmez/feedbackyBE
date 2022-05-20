@@ -4,6 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 require('dotenv/config');
 const feedbacksRouter = require('./routes/feedbacks');
+const Feedbacks = require('./models/Feedbacks');
 
 const app = express();
 
@@ -56,12 +57,29 @@ app.listen(PORT, () => {
 
 
 app.get('/', (req, res) => {
-    res.send('Hello World');
+    res.header("Access-Control-Allow-Origin", "*");
+    res.setHeader('Content-type','text/html');
+    Feedbacks.find()
+    .then(feedbacks => {
+        res.send(
+         `<table key={'table'} border=1>
+                <thead>
+                  <tr key={'header'}>
+                    ${Object.keys(feedbacks[0].toJSON()).map((key, index) => (
+                      `<th key=${index}>${key}</th>`
+                    ))}
+                  </tr>
+                  ${feedbacks.map((item, index) => (
+                    `<tr key=${index}>
+                      ${Object.values(item.toJSON()).map((val, index) => (
+                        `<td key=${index}>${val}</td>`
+                      ))}
+                    </tr>`
+                  ))}
+                  </thead>
+                </table>`);
+    })
+    .catch(err => {
+        res.json(err);
+    });
 });
-
-const feedbacks = [
-    {
-        id: "string",
-        feedbacks:"string"
-    }
-]
